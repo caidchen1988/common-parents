@@ -1,12 +1,8 @@
 package com.qtdbp.poi.excel.service;
 
-import com.qtdbp.poi.excel.AbstractExcel2007Writer;
-import com.qtdbp.poi.excel.Excel2007Writer;
 import com.qtdbp.poi.excel.model.ExcelCellModel;
 import com.qtdbp.poi.excel.model.ExcelRowModel;
 import com.qtdbp.poi.excel.model.ExcelSheetModel;
-
-import java.io.*;
 
 /**
  * @author: caidchen
@@ -14,26 +10,6 @@ import java.io.*;
  * To change this template use File | Settings | File Templates.
  */
 public class ExcelReaderService implements IExcelReader {
-
-    /* 业务逻辑实现方法
-     * @see com.eprosun.util.excel.IRowReader#getRows(int, int, java.util.List)
-     */
-    /*public ExcelRowModel getRows(int sheetIndex, int curRow, List<ExcelCellModel> cellList) {
-        // TODO Auto-generated method stub
-
-        ExcelRowModel row = new ExcelRowModel(curRow) ;
-        row.setCellList(cellList);
-
-        System.out.print("##row: " + row.getRowNum() + " , data: ");
-        for (ExcelCellModel cell : row.getCellList()) {
-
-            System.out.print("num: " + cell.getColNum() + ", val: " + cell.getColVal()+"; ");
-        }
-        System.out.println();
-
-
-        return row ;
-    }*/
 
     public void getSheet(ExcelSheetModel sheet) {
 

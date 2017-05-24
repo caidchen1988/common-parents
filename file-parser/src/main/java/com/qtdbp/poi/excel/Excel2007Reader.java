@@ -1,5 +1,6 @@
 package com.qtdbp.poi.excel;
 
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.qtdbp.poi.excel.model.ExcelCellModel;
 import com.qtdbp.poi.excel.model.ExcelRowModel;
 import com.qtdbp.poi.excel.model.ExcelSheetModel;
@@ -10,6 +11,7 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.model.SharedStringsTable;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -58,6 +60,12 @@ public class Excel2007Reader  extends DefaultHandler {
     public void setRowReader(IExcelReader rowReader){
         this.rowReader = rowReader;
     }
+
+    /**
+     * 用于外层调用时注入fastdfs-client上传对象
+     */
+    @Autowired
+    private FastFileStorageClient storageClient ;
 
     /**只遍历一个电子表格，其中sheetId为要遍历的sheet索引，从1开始，1-3
      * @param filename

@@ -54,6 +54,13 @@
                 <version>3.5</version>
             </dependency>
 
+            <!-- 依赖FastDFS客户端，文件上传 -->
+            <dependency>
+                <groupId>com.github.tobato</groupId>
+                <artifactId>fastdfs-client</artifactId>
+                <version>1.25.3-RELEASE</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
