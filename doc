@@ -1,0 +1,2 @@
+common-parents  公共服务组件
+    | -- file-parser 文件解析器
