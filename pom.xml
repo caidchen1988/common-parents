@@ -10,6 +10,7 @@
     <version>1.0.0</version>
     <modules>
         <module>file-parser</module>
+        <module>qt-ui</module>
     </modules>
 
     <dependencyManagement>
@@ -59,6 +60,22 @@
                 <groupId>com.github.tobato</groupId>
                 <artifactId>fastdfs-client</artifactId>
                 <version>1.25.3-RELEASE</version>
+            </dependency>
+
+            <!-- springboot依赖jar -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>1.5.2.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- thymeleaf 关闭未结束标签检测-->
+            <dependency>
+                <groupId>net.sourceforge.nekohtml</groupId>
+                <artifactId>nekohtml</artifactId>
+                <version>1.9.22</version>
             </dependency>
 
         </dependencies>
