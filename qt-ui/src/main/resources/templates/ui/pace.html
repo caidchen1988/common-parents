@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!--
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
+Version: 4.7.5
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Follow: www.twitter.com/keenthemes
+Dribbble: www.dribbble.com/keenthemes
+Like: www.facebook.com/keenthemes
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <title>钱塘UI | Page Progress Bar Style</title>
+    <div th:replace="layout/header"></div>
+
+</head>
+<!-- END HEAD -->
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+<div class="page-wrapper">
+    <!-- BEGIN HEADER -->
+    <div th:replace="layout/page-header"></div>
+    <!-- END HEADER -->
+    <!-- BEGIN HEADER & CONTENT DIVIDER -->
+    <div class="clearfix"> </div>
+    <!-- END HEADER & CONTENT DIVIDER -->
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <!-- BEGIN SIDEBAR -->
+        <div th:replace="layout/page-sidebar"></div>
+        <!-- END SIDEBAR -->
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <!-- BEGIN CONTENT BODY -->
+            <div class="page-content">
+                <!-- BEGIN PAGE BAR -->
+                <div class="page-bar">
+                    <ul class="page-breadcrumb">
+                        <li>
+                            <a href="index.html">Home</a>
+                            <i class="fa fa-circle"></i>
+                        </li>
+                        <li>
+                            <a href="#">UI Features</a>
+                            <i class="fa fa-circle"></i>
+                        </li>
+                        <li>
+                            <span>Page Progress Bar</span>
+                        </li>
+                    </ul>
+                    <div class="page-toolbar">
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn green btn-sm btn-outline dropdown-toggle" data-toggle="dropdown"> Actions
+                                <i class="fa fa-angle-down"></i>
+                            </button>
+                            <ul class="dropdown-menu pull-right" role="menu">
+                                <li>
+                                    <a href="#">
+                                        <i class="icon-bell"></i> Action</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="icon-shield"></i> Another action</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="icon-user"></i> Something else here</a>
+                                </li>
+                                <li class="divider"> </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="icon-bag"></i> Separated link</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PAGE BAR -->
+                <!-- BEGIN PAGE TITLE-->
+                <h1 class="page-title"> Page Progress Bar Style 1
+                    <small>page progress bar style 1</small>
+                </h1>
+                <!-- END PAGE TITLE-->
+                <!-- END PAGE HEADER-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="note note-danger note-bordered">
+                            <h4 class="block">Pace</h4>
+                            <p> An automatic web page progress bar. Pace will automatically monitor your Ajax requests, event loop lag, document ready state and elements on your page to decide on the progress. For more info check the plugin's documentation
+                                <a href="http://github.hubspot.com/pace" class="btn btn-outline green" target="_blank"> documentation</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END CONTENT BODY -->
+        </div>
+        <!-- END CONTENT -->
+    </div>
+    <!-- END CONTAINER -->
+    <!-- BEGIN FOOTER -->
+    <div th:replace="layout/page-footer" />
+    <!-- END FOOTER -->
+</div>
+
+<!-- BEGIN SCRIPT -->
+<div th:replace="layout/footer"></div>
+<!-- END SCRIPT -->
+
+</body>
+</html>

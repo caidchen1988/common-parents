@@ -19,10 +19,12 @@ License: You must have a valid license purchased only from themeforest(the above
 <!--<![endif]-->
     <!-- BEGIN HEAD -->
     <head>
-        <title>钱塘UI模板 | Material Design Form Validation</title>
+        <title>钱塘UI | Material Design Form Validation</title>
         <div th:replace="layout/header"></div>
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <link href="/assets/global/plugins/ladda/ladda-themeless.min.css" rel="stylesheet" type="text/css">
+
+        <link href="/assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL PLUGINS -->
     </head>
     <!-- END HEAD -->
@@ -99,7 +101,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </label>
                                                     <span class="help-block">Enter your name...</span>
                                                 </div>
-                                                <!--<div class="form-group form-md-line-input">
+                                                <div class="form-group form-md-line-input">
                                                     <input type="text" class="form-control" id="form_control_2" name="email" placeholder="Enter your email">
                                                     <label for="form_control_2">Email
                                                         <span class="required">*</span>
@@ -271,7 +273,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <span class="box"></span> Option 3 </label>
                                                         </div>
                                                     </div>
-                                                </div>-->
+                                                </div>
                                             </div>
                                             <div class="form-actions">
                                                 <div class="row">
@@ -315,11 +317,15 @@ License: You must have a valid license purchased only from themeforest(the above
 
         <script src="/assets/global/plugins/ladda/spin.min.js" type="text/javascript"></script>
         <script src="/assets/global/plugins/ladda/ladda.min.js" type="text/javascript"></script>
+
+        <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
 
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="/assets/pages/scripts/form-validation-md.js" type="text/javascript"></script>
+        <script src="/pages/common.js" type="text/javascript"></script>
         <script>
+            <!-- 调用 -->
             jQuery(document).ready(function() {
                 var options = {
                     _form: "#form_sample_2",

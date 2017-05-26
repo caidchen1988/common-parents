@@ -19,7 +19,7 @@ var FormValidationMd = function() {
         form.validate({
             errorElement: 'span', //default input error message container
             errorClass: 'help-block help-block-error', // default input error message class
-            focusInvalid: false, // do not focus the last invalid input
+            focusInvalid: true, // do not focus the last invalid input
             ignore: "", // validate all fields including form hidden input
             messages: options._messages,
             rules: options._rules,
@@ -65,16 +65,29 @@ var FormValidationMd = function() {
                     dataType:"json",
                     beforeSubmit : function () {
                         btn.start() ;
-                        btn.star
                     },
                     success:function( data ){
-                        btn.stop();
 
-                        alert(data)
+                        // 实际开发中需要删除setTimeout
+                        setTimeout(function () {
+                            btn.stop();
 
+                            Common.toastr({
+                                _type: 'success',
+                                _title: '表单提交',
+                                _msg: '数据提交成功'
+                            }) ;
+
+                        },2000);
                     },
                     error : function ( data ) {
                         btn.stop();
+
+                        Common.toastr({
+                            _type: 'error',
+                            _title: '表单提交',
+                            _msg: '网络超时，请重试或者联系管理员'
+                        }) ;
                     }
                 });
             }

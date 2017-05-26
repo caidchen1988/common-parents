@@ -5,7 +5,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -20,6 +19,11 @@ import java.util.Map;
 @Controller
 public class FormController {
 
+    /**
+     * 表单校验以及ajax表单提交
+     * 集成了 jquery.validate.js、jquery.form.js、ladda.js
+     * @return
+     */
     @RequestMapping(value = "/form/validate", method = RequestMethod.GET)
     public String getValidate() {
         return "form/validate" ;
@@ -30,14 +34,11 @@ public class FormController {
     @RequestMapping(value = "/form/validate", method = RequestMethod.POST)
     public ModelMap postValidate(HttpServletRequest request) {
 
-//        ModelAndView view = new ModelAndView("dashboard") ;
-
         ModelMap map = new ModelMap() ;
 
         Map<String, String[]> result = request.getParameterMap() ;
         if(result != null) {
             for (String key : result.keySet()) {
-//                view.addObject(key, result.get(key));
 
                 map.put(key, result.get(key)) ;
 System.out.println("key: "+ key +", Object: "+ result.get(key));
