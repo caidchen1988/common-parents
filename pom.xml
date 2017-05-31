@@ -11,6 +11,7 @@
     <modules>
         <module>file-parser</module>
         <module>qt-ui</module>
+        <module>base</module>
     </modules>
 
     <dependencyManagement>

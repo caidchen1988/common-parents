@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: qt-base
+  profiles:
+    active: dev # 默认激活application-dev.yml配置
+  thymeleaf:
+    cache: false  # thymeleaf模板引擎是否开启缓存，开发时关闭
+    mode: LEGACYHTML5
