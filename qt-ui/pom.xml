@@ -51,7 +51,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <!--<version>1.5.2.RELEASE</version>-->
                 <configuration>
-                    <mainClass>com.qtdbp.tradingadmin.AdminApplication</mainClass>
+                    <mainClass>com.qtdbp.ui.Application</mainClass>
                 </configuration>
                 <executions>
                     <execution>

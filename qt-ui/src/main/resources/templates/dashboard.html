@@ -2,11 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>websocket client</title>
+
+    <script src="assets/global/plugins/sockjs.min.js"></script>
+    <script src="assets/global/plugins/stomp.min.js"></script>
+    <script src="assets/global/plugins/jquery.min.js"></script>
+
 </head>
 <body>
 
-    1111111111111111
+    <div>
+        <button id="connect" onclick="noticeSocket();">连接</button>
+        <button id="connect1" onclick="_ajax();">跨域</button>
+    </div>
 
+    <h1 id="title">测试接收信息</h1>
+
+    <script>
+        var noticeSocket = function () {
+            var s = new SockJS('http://192.168.31.37:8081/socket');
+            var stompClient = Stomp.over(s);
+            stompClient.connect({}, function () {
+                console.log('notice socket connected!');
+                stompClient.subscribe('/topic/notice', function (response) {
+                    $("#title").html(JSON.parse(response.body).responseMessage);
+                });
+            });
+        };
+
+        function _ajax() {
+            $.get("http://192.168.31.37:8081/ws",function(data,status){
+                alert("Data: " + data + "nStatus: " + status);
+            });
+        }
+    </script>
 </body>
 </html>
