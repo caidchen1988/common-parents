@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        String file = "C:\\Users\\dell\\Desktop\\物流(2)\\EDI指数.xlsx";
+        String file = "D:\\tmp\\物流设施.xlsx";
 
         IExcelReader reader = new ExcelReaderService();
         //ExcelReaderUtil.readExcel(reader, "F://te03.xls");

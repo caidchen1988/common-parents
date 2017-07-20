@@ -347,7 +347,7 @@ public class ReadExcelUtils {
         System.out.println("###################################时间："+(end-start));
 
         start = System.currentTimeMillis() ;
-        List<List<String>> list = howto.processSAXReadOneSheet(fileName ,1,null ,4) ;
+        List<List<String>> list = howto.processSAXReadOneSheet(fileName ,2,null ,4) ;
         for(List<String> row : list) {
             for(String cell : row) {
                 System.out.print("单元格:"+ cell +" ");

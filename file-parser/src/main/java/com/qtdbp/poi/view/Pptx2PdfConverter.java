@@ -79,8 +79,6 @@ public class Pptx2PdfConverter extends Converter{
 		//Not sure what repercussions are there for closing a writer but just do it.
 		writer.close();
 		finished();
-		
-
 	}
 	
 	protected Dimension processSlides() throws IOException{
@@ -107,7 +105,7 @@ public class Pptx2PdfConverter extends Converter{
 	/**
 	 * 解决中文乱码
 	 */
-	private void solveChineseDisorderlyCode(int index) {
+	protected void solveChineseDisorderlyCode(int index) {
 
 		List<XSLFShape> shapes = slides.get(index).getShapes() ;
 		if(shapes == null || shapes.isEmpty()) return;

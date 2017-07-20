@@ -143,6 +143,16 @@ public class Excel2007Reader  extends DefaultHandler {
         return parser;
     }
 
+    /**
+     * 开始解析节点
+     *
+     * 继承的DefaultHandler处理类就是专门来解析xml
+     * @param uri
+     * @param localName
+     * @param name
+     * @param attributes
+     * @throws SAXException
+     */
     public void startElement(String uri, String localName, String name,
                              Attributes attributes) throws SAXException {
 
@@ -189,6 +199,14 @@ public class Excel2007Reader  extends DefaultHandler {
         lastContents = "";
     }
 
+    /**
+     * 结束解析节点
+     * 这是节点解析完成时调用的，这里我们遇到item的时候才调用下面的
+     * @param uri
+     * @param localName
+     * @param name
+     * @throws SAXException
+     */
     public void endElement(String uri, String localName, String name)
             throws SAXException {
 
@@ -250,6 +268,13 @@ public class Excel2007Reader  extends DefaultHandler {
 
     }
 
+    /**
+     * 保存节点内容
+     * @param ch
+     * @param start
+     * @param length
+     * @throws SAXException
+     */
     public void characters(char[] ch, int start, int length)
             throws SAXException {
         //得到单元格内容的值
