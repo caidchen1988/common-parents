@@ -1,3 +1,8 @@
 common-parents  公共服务组件
     | -- file-parser 文件解析器
     | -- qt-ui 钱塘UI模板
+
+
+# V1.1.0 2017-07-20
+1. 支持doc/docx,ppt/pptx转pdf
+2. 支持xsl/xsl转html
