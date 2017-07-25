@@ -4,7 +4,9 @@
         <thead>
             <tr>
                 <#list titleCellList as cell>
-                <td><input type="text" class="table_content" id="title-cellid-${cell.colNum}" value="${cell.colVal}"/></td>
+                <td class="table_content" id="title-cellid-${cell.colNum}">
+                    ${cell.colVal}
+                </td>
                 </#list>
             </tr>
         </thead>
@@ -12,7 +14,9 @@
             <#list rowList as row>
             <tr>
                 <#list row.cellList as cell>
-                <td><input type="text" class="table_content" id="content-cellid-${cell.colNum}" value="${cell.colVal}"/></td>
+                <td class="table_content" id="content-cellid-${cell.colNum}">
+                    ${cell.colVal}
+                </td>
                 </#list>
             </tr>
             </#list>
@@ -22,7 +26,7 @@
     <!-- sheet -->
     <div class="select_container clearfix">
         <#list sheetList as sheet>
-        <a href="javascript:;" class="active" id="sheetid-${sheet.sheetNum}">${sheet.name}</a>
+        <a href="javascript:;" id="${sheet.sheetNum}">${sheet.name}</a>
         </#list>
     </div>
 </div>
