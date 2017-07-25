@@ -1,5 +1,9 @@
 package com.qtdbp.poi.excel.utils;
 
+import com.qtdbp.poi.excel.model.ExcelCellModel;
+import com.qtdbp.poi.excel.model.ExcelRowModel;
+import com.qtdbp.poi.excel.model.ExcelSheetModel;
+import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.BuiltinFormats;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -8,80 +12,116 @@ import org.apache.poi.xssf.model.SharedStringsTable;
 import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.junit.Test;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
+ * 基于XSSF and SAX (Event API)
+ *
+ * 读取excel的第一个Sheet的内容
  * @author: caidchen
- * @create: 2017-07-19 17:32
+ * @create: 2017-07-19 13:17
  * To change this template use File | Settings | File Templates.
  */
-public class ExampleEventUserModel {
+public class ReadExcelBySAXUtils {
 
+    // 开始解析行数
+    private Integer startRow ;
+    // 结束解析行数
+    private Integer endRow ;
     private static StylesTable stylesTable;
+    // 存储每个sheet数据
+    private List<ExcelRowModel> rowList = new ArrayList<ExcelRowModel>();
 
-    private List<List<String>> list = new ArrayList<List<String>>();
+    private XSSFReader reader;
 
-    /**
-     * 处理一个sheet
-     * @param filename
-     * @throws Exception
-     */
-    public List<List<String>> processOneSheet(String filename) throws Exception {
-
-        OPCPackage pkg = OPCPackage.open(filename);
-        XSSFReader r = new XSSFReader( pkg );
-        stylesTable = r.getStylesTable();
-        SharedStringsTable sst = r.getSharedStringsTable();
-
-        XMLReader parser = fetchSheetParser(sst);
-
-        // Seems to either be rId# or rSheet#
-        InputStream sheet2 = r.getSheet("rId1");
-        InputSource sheetSource = new InputSource(sheet2);
-        parser.parse(sheetSource);
-        sheet2.close();
-
-        return list ;
-    }
-
-    /**
-     * 处理所有sheet
-     * @param filename
-     * @throws Exception
-     */
-    public void processAllSheets(String filename) throws Exception {
-
-        OPCPackage pkg = OPCPackage.open(filename);
-        XSSFReader r = new XSSFReader( pkg );
-        SharedStringsTable sst = r.getSharedStringsTable();
-
-        XMLReader parser = fetchSheetParser(sst);
-
-        Iterator<InputStream> sheets = r.getSheetsData();
-        while(sheets.hasNext()) {
-            System.out.println("Processing new sheet:\n");
-            InputStream sheet = sheets.next();
-            InputSource sheetSource = new InputSource(sheet);
-            parser.parse(sheetSource);
-            sheet.close();
-            System.out.println("");
+    public void init(InputStream inputStream) {
+        try {
+            this.reader = reader(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (OpenXML4JException e) {
+            e.printStackTrace();
         }
     }
 
     /**
-     * 获取解析器
-     * @param sst
+     * 读取文件流
+     * @param inputStream
      * @return
+     * @throws IOException
+     * @throws OpenXML4JException
+     */
+    private XSSFReader reader(InputStream inputStream) throws IOException, OpenXML4JException {
+        OPCPackage pkg = OPCPackage.open(inputStream);
+        return new XSSFReader( pkg ) ;
+    }
+
+    /**
+     * 采用SAX进行解析
+     * 获取excel表格中所有的sheet工作簿
+     * @return {sheet_index, sheet_name}
+     * @throws IOException
+     * @throws OpenXML4JException
      * @throws SAXException
      */
-    public XMLReader fetchSheetParser(SharedStringsTable sst) throws SAXException {
+    public List<ExcelSheetModel> processSAXReadSheet() throws IOException, OpenXML4JException, SAXException   {
+
+        List<ExcelSheetModel> sheetContainer = new ArrayList<>();
+
+//        XSSFReader reader = reader( inputStream );
+        XSSFReader.SheetIterator sheets = (XSSFReader.SheetIterator) this.reader.getSheetsData();
+
+        int i = 0 ;
+        while (sheets.hasNext()) {
+            i++ ;
+            sheets.next();
+
+            sheetContainer.add(new ExcelSheetModel(sheets.getSheetName(),null,i)) ;
+        }
+
+        return sheetContainer ;
+    }
+
+    /**
+     * 获取单个sheet工作簿内容
+     * @param sheetId sheet index 默认从1开始
+     * @param startRow 开始第几行解析，默认从1开始
+     * @param endRow 结束第几行解析，null返回所有，注意：传值会导致解析变慢，数据量参超过2000时，建议传null
+     * @return
+     * @throws Exception
+     */
+    public List<ExcelRowModel> processSAXReadOneSheet(Integer sheetId,Integer startRow, Integer endRow) throws OpenXML4JException, IOException, SAXException {
+
+        this.startRow = startRow == null ? 1 : startRow;
+        this.endRow = endRow ;
+//        this.list = new ArrayList<>();
+        this.rowList = new ArrayList<>();
+
+        if(sheetId == null) sheetId = 1 ;
+
+//        XSSFReader r = reader( inputStream );
+        this.stylesTable = this.reader.getStylesTable() ;
+
+        SharedStringsTable sst = this.reader.getSharedStringsTable();
+        XMLReader parser = fetchSheetParser(sst);
+        InputStream sheet = this.reader.getSheet("rId"+sheetId);
+        InputSource sheetSource = new InputSource(sheet);
+        // 解析
+        parser.parse(sheetSource);
+        // 关闭
+        sheet.close();
+
+        return rowList ;
+    }
+
+    private XMLReader fetchSheetParser(SharedStringsTable sst) throws SAXException {
         XMLReader parser = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
         ContentHandler handler = new SheetHandler(sst);
         parser.setContentHandler(handler);
@@ -98,9 +138,9 @@ public class ExampleEventUserModel {
         private String lastContents;
         private boolean nextIsString;
 
-        private List<String> rowlist = new ArrayList<>();
+        private List<ExcelCellModel> cellList = new ArrayList<ExcelCellModel>();
         private int curRow = 0;
-        private int curCol = 0;
+        private int curCol = -1;
 
         //定义前一个元素和当前元素的位置，用来计算其中空的单元格数量，如A6和A8等
         private String preRef = null, ref = null;
@@ -111,11 +151,6 @@ public class ExampleEventUserModel {
         private final DataFormatter formatter = new DataFormatter();
         private short formatIndex;
         private String formatString;
-
-        //用一个enum表示单元格可能的数据类型
-        /*enum CellDataType {
-            BOOL, ERROR, FORMULA, INLINESTR, SSTINDEX, NUMBER, DATE, NULL
-        }*/
 
         private SheetHandler(SharedStringsTable sst) {
             this.sst = sst;
@@ -133,6 +168,8 @@ public class ExampleEventUserModel {
 
             // c => cell
             if(name.equals("c")) {
+                curCol++;
+
                 //前一个单元格的位置
                 if(preRef == null){
                     preRef = attributes.getValue("r");
@@ -151,10 +188,11 @@ public class ExampleEventUserModel {
                 } else {
                     nextIsString = false;
                 }
-
             }
+
             // Clear contents cache
             lastContents = "";
+
         }
 
         /**
@@ -168,6 +206,8 @@ public class ExampleEventUserModel {
             formatString = null;
             String cellType = attributes.getValue("t");
             String cellStyleStr = attributes.getValue("s");
+            String columData = attributes.getValue("r");
+
             if ("b".equals(cellType)){
                 nextDataType = CellDataType.BOOL;
             }else if ("e".equals(cellType)){
@@ -179,7 +219,8 @@ public class ExampleEventUserModel {
             }else if ("str".equals(cellType)){
                 nextDataType = CellDataType.FORMULA;
             }
-            if (cellStyleStr != null){
+
+            /*if (cellStyleStr != null){
                 int styleIndex = Integer.parseInt(cellStyleStr);
                 XSSFCellStyle style = stylesTable.getStyleAt(styleIndex);
                 formatIndex = style.getDataFormat();
@@ -192,6 +233,23 @@ public class ExampleEventUserModel {
                 if (formatString == null){
                     nextDataType = CellDataType.NULL;
                     formatString = BuiltinFormats.getBuiltinFormat(formatIndex);
+                }
+            }*/
+
+            if (cellStyleStr != null) {
+                int styleIndex = Integer.parseInt(cellStyleStr);
+                XSSFCellStyle style = stylesTable.getStyleAt(styleIndex);
+                formatIndex = style.getDataFormat();
+                formatString = style.getDataFormatString();
+
+//                System.out.println("formatString: "+ formatString);
+
+                if (formatString == null) {
+                    nextDataType = CellDataType.NULL;
+                    formatString = BuiltinFormats.getBuiltinFormat(formatIndex);
+                } else if (formatString.contains("yyyy")) {
+                    nextDataType = CellDataType.DATE;
+                    formatString = "yyyy-MM-dd hh:mm:ss";
                 }
             }
         }
@@ -212,58 +270,44 @@ public class ExampleEventUserModel {
                 nextIsString = false;
             }
 
-            // v => contents of a cell
-            // Output after we've seen the string contents
             if (name.equals("v")) {
+                // v => 单元格的值，如果单元格是字符串则v标签的值为该字符串在SST中的索引
+                // 将单元格内容加入rowlist中，在这之前先去掉字符串前后的空白符
+
                 String value = this.getDataValue(lastContents.trim(), "");
                 //补全单元格之间的空单元格
+
+               /* System.out.println("##########ref:"+ref+", preRef:"+preRef+", name:"+name);
+
                 if(!ref.equals(preRef)){
                     int len = countNullCell(ref, preRef);
                     for(int i=0;i<len;i++){
-                        rowlist.add(curCol, "");
-                        curCol++;
+                        cellList.add(new ExcelCellModel(curCol, null));
                     }
-                }
-                rowlist.add(curCol, value);
-                curCol++;
-            }else {
+                }*/
+
+                cellList.add(new ExcelCellModel(curCol, value));
+            } else {
                 //如果标签名称为 row，这说明已到行尾，调用 optRows() 方法
                 if (name.equals("row")) {
-                    String value = "";
                     //默认第一行为表头，以该行单元格数目为最大数目
-                    if(curRow == 0){
+                    if (curRow == 0) {
                         maxRef = ref;
                     }
                     //补全一行尾部可能缺失的单元格
-                    if(maxRef != null){
+                    /*if (maxRef != null) {
                         int len = countNullCell(maxRef, ref);
-                        for(int i=0;i<=len;i++){
-                            rowlist.add(curCol, "");
-                            curCol++;
+                        for (int i = 0; i <= len; i++) {
+                            cellList.add(new ExcelCellModel(curCol, null));
                         }
-                    }
-                    /*//拼接一行的数据
-                    for(int i=0;i<rowlist.size();i++){
-                        if(rowlist.get(i).contains(",")){
-                            value += "\""+rowlist.get(i)+"\",";
-                        }else{
-                            value += rowlist.get(i)+",";
-                        }
-                    }
-                    //加换行符
-                    value += "\n";
-                    try {
-                        writer.write(value);
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }*/
-                    list.add(rowlist);
-                    rowlist = new ArrayList<>() ;
 
+                    rowList.add(new ExcelRowModel(curRow, cellList, curCol+1));
                     curRow++;
+
                     //一行的末尾重置一些数据
-//                    rowlist.clear();
-                    curCol = 0;
+                    cellList = new ArrayList<>();
+                    curCol = -1;
                     preRef = null;
                     ref = null;
                 }
@@ -315,12 +359,14 @@ public class ExampleEventUserModel {
                     }catch(NumberFormatException ex){
                         thisStr = value.toString();
                     }
-                    thisStr = thisStr.replace(" ", "");
+//                    thisStr = thisStr.replace(" ", "");
                     break;
-                default:
-                    thisStr = "";
+                default: //自定义单元格格式
+                    thisStr = "未知格式数据";
                     break;
             }
+
+//            System.out.println("thisStr: "+ thisStr);
             return thisStr;
         }
 
@@ -380,24 +426,38 @@ public class ExampleEventUserModel {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void testProcess() throws Exception {
+
 
         String fileName = "D:\\tmp\\物流指数.xlsx";
+        InputStream inputStream = new BufferedInputStream(new FileInputStream(new File(fileName))) ;
 
-        ExampleEventUserModel example = new ExampleEventUserModel();
-        long time_1 = System.currentTimeMillis();
+        ReadExcelBySAXUtils howto = new ReadExcelBySAXUtils();
+        howto.init(inputStream);
 
-        example.processOneSheet(fileName);
+        long start = System.currentTimeMillis() ;
+        List<ExcelSheetModel> sheetContainer = howto.processSAXReadSheet() ;
 
-        for(List<String> row : example.list) {
-            for(String cell : row) {
-                System.out.print("单元格:"+ cell +" ");
+        for(ExcelSheetModel sheet : sheetContainer) {
+            System.out.println("工作簿:"+sheet.getSheetNum()+"，"+ sheet.getName());
+        }
+        long end = System.currentTimeMillis() ;
+        System.out.println("###################################时间："+(end-start));
+
+
+//        inputStream = new BufferedInputStream(new FileInputStream(new File(fileName))) ;
+        start = System.currentTimeMillis() ;
+        List<ExcelRowModel> list = howto.processSAXReadOneSheet(1,null ,4) ;
+        for(ExcelRowModel row : list) {
+            System.out.println("行数据：【行数："+row.getRowNum()+"，列数："+row.getTotalCellNum()+"】");
+            for(ExcelCellModel cell : row.getCellList()) {
+                System.out.print("单元格: 【x:"+row.getRowNum()+",y:"+cell.getColNum()+", index: "+row.getCellList().indexOf(cell)+", val:"+cell.getColVal()+"】");
             }
             System.out.println();
         }
+        end = System.currentTimeMillis() ;
 
-        long time_2 = System.currentTimeMillis();
-        System.out.println("-- 耗时 --"+(time_2 - time_1)+"ms");
+        System.out.println("###################################解析单个sheet时间："+(end-start));
     }
-
 }

@@ -103,12 +103,11 @@
             <artifactId>junit</artifactId>
         </dependency>
 
-
-        <!--<dependency>
-            <groupId>fr.opensagres.xdocreport</groupId>
-            <artifactId>org.apache.poi.xwpf.converter.core</artifactId>
-            <version>1.0.6</version>
-        </dependency>-->
+        <!-- xslx转html，动态输出html -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+        </dependency>
 
     </dependencies>
 

@@ -19,9 +19,10 @@ public class ConverterUtil {
 	 *
 	 * @param inStream
 	 * @param inPath
+	 * @param page sheet表位置，从1开始
 	 * @return
 	 */
-	public static void process(InputStream inStream, String inPath, OutputStream outStream) {
+	public static void process(InputStream inStream, String inPath, OutputStream outStream, Integer page) {
 
 		try {
 
@@ -38,6 +39,9 @@ public class ConverterUtil {
 				converter = new Pptx2PdfConverter(inStream, outStream, shouldShowMessages, true);
 			} else if (lowerCaseInPath.endsWith("odt")) {
 				converter = new Odt2PdfConverter(inStream, outStream, shouldShowMessages, true);
+			} else if (lowerCaseInPath.endsWith("xlsx")){
+				converter = new Xslx2HtmlConverter(inStream, outStream, shouldShowMessages, true);
+				converter.setPage(page);
 			} else {
 				converter = null;
 			}

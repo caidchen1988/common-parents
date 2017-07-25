@@ -22,15 +22,18 @@ public class DocTest {
 
 //    	String infileName = "D:\\tmp\\计费boss系统.odt" ;
 //		String infileName = "D:\\tmp\\计费boss系统.docx" ;
-		String infileName = "D:\\tmp\\2.doc" ;
+//		String infileName = "D:\\tmp\\2.doc" ;
 //		String infileName = "D:\\tmp\\大数据架构文档.pptx" ;
 //		String infileName = "D:\\tmp\\1.ppt" ;
 
+		String infileName = "D:\\tmp\\物流指数.xlsx" ;
+
 		try {
-			String outFileName = "D:\\tmp\\out.pdf" ;
+//			String outFileName = "D:\\tmp\\out.pdf" ;
+			String outFileName = "D:\\tmp\\out.html" ;
 			InputStream inStream = getInFileStream(infileName) ;
 			OutputStream outStream = getOutFileStream(outFileName) ;
-			ConverterUtil.process(inStream, infileName, outStream);
+			ConverterUtil.process(inStream, infileName, outStream, null);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

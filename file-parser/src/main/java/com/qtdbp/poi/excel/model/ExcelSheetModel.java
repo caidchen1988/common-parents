@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class ExcelSheetModel implements Serializable {
 
+    private int sheetNum;
     private String name;    // 名称
     private int totalNum ;      // 总记录数
     private List<ExcelRowModel> rowList ;  // 每行数据
@@ -19,6 +20,12 @@ public class ExcelSheetModel implements Serializable {
     public ExcelSheetModel(String name, List<ExcelRowModel> rowList) {
         this.name = name;
         this.rowList = rowList;
+    }
+
+    public ExcelSheetModel(String name, List<ExcelRowModel> rowList, int sheetNum) {
+        this.name = name;
+        this.rowList = rowList;
+        this.sheetNum = sheetNum ;
     }
 
     public String getName() {
@@ -45,4 +52,11 @@ public class ExcelSheetModel implements Serializable {
         this.rowList = rowList;
     }
 
+    public int getSheetNum() {
+        return sheetNum;
+    }
+
+    public void setSheetNum(int sheetNum) {
+        this.sheetNum = sheetNum;
+    }
 }

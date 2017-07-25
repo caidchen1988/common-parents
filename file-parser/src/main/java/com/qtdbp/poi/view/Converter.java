@@ -26,6 +26,7 @@ public abstract class Converter {
 
 	protected boolean showOutputMessages = false;
 	protected boolean closeStreamsWhenComplete = true;
+	protected Integer page = 1; // sheet index, 默认1
 
 	public Converter(InputStream inStream, OutputStream outStream, boolean showMessages, boolean closeStreamsWhenComplete){
 		this.inStream = inStream;
@@ -82,9 +83,12 @@ public abstract class Converter {
 		}
 	}
 	
-	
 	protected void actuallySendToOutput(String toBePrinted){
 		System.out.println(toBePrinted);
+	}
+
+	protected void setPage(Integer page) {
+		this.page = page ;
 	}
 
 }

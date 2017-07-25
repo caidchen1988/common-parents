@@ -12,6 +12,7 @@ import java.util.List;
 public class ExcelRowModel {
 
     private int rowNum ; // 行数
+    private int totalCellNum ; // 一行总列数
     private List<ExcelCellModel> cellList ; // 当前所有列数据
 
     public ExcelRowModel(int rowNum) {
@@ -21,6 +22,12 @@ public class ExcelRowModel {
     public ExcelRowModel(int rowNum, List<ExcelCellModel> cellList) {
         this.rowNum = rowNum;
         this.cellList = cellList;
+    }
+
+    public ExcelRowModel(int rowNum, List<ExcelCellModel> cellList, int totalCellNum) {
+        this.rowNum = rowNum;
+        this.cellList = cellList;
+        this.totalCellNum = totalCellNum;
     }
 
     public int getRowNum() {
@@ -39,4 +46,11 @@ public class ExcelRowModel {
         this.cellList = cellList;
     }
 
+    public int getTotalCellNum() {
+        return totalCellNum;
+    }
+
+    public void setTotalCellNum(int totalCellNum) {
+        this.totalCellNum = totalCellNum;
+    }
 }
